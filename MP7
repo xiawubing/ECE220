@@ -1,0 +1,528 @@
+PUT YOUR MP7 REPORT IN THIS FILE.
+
+printRev:
+
+    what the code does?  prints the given string in reverse along with its length.
+    How it works? It is implemented recursively by function. First recursively to the next layer function, in the output of the current character
+
+    Inputs for which the program does not work:
+
+    Inputs1: wiiruf shdhj
+    Output: 
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "wiiruf" reversed is "furiiw" (length 32773)
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "shdhj" reversed is "jhdhs" (length 32772)
+    Correct:
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "wiiruf" reversed is "furiiw" (length 6)
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "shdhj" reversed is "jhdhs" (length 5)
+
+
+    Inputs2: a ab ca
+    Output:
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "a" reversed is "a" (length 1)
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "ab" reversed is "ba" (length 32769)
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "ca" reversed is "ac" (length 32769)
+    Correct:
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "a" reversed is "a" (length 1)
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "ab" reversed is "ba" (length 2)
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "ca" reversed is "ac" (length 2)
+
+    Input3: reii riirut
+    Output:
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "reii" reversed is "iier" (length 32771)
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "riirut" reversed is "turiir" (length 32773)
+    Correct:
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "reii" reversed is "iier" (length 4)
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+        "riirut" reversed is "turiir" (length 6)
+
+    Trace:
+
+        (gdb) b print_reverse
+        Breakpoint 1 at 0x1199: file pr_buggy.c, line 40.
+        (gdb) r rwii
+        Starting program: /home/xia/ece220_mps/mp7/dist/printRev/prev rwii
+        [Thread debugging using libthread_db enabled]
+        Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+        9 8 7 6 5 4 3 2 1 0
+        What's on the stack now?
+
+
+        Breakpoint 1, print_reverse (s=0x7fffffffdd7a "rwii") at pr_buggy.c:40
+        40          if ('\0' == *s) {
+        (gdb) s
+        45          rest = print_reverse (s + 1);
+        (gdb) s
+
+        Breakpoint 1, print_reverse (s=0x7fffffffdd7b "wii") at pr_buggy.c:40
+        40          if ('\0' == *s) {
+        (gdb) s
+        45          rest = print_reverse (s + 1);
+        (gdb) s
+
+        Breakpoint 1, print_reverse (s=0x7fffffffdd7c "ii") at pr_buggy.c:40
+        40          if ('\0' == *s) {
+        (gdb) p rest
+        $1 = 0
+        (gdb) s
+        45          rest = print_reverse (s + 1);
+        (gdb) p rest
+        $2 = 0
+        (gdb) s
+
+        Breakpoint 1, print_reverse (s=0x7fffffffdd7d "i") at pr_buggy.c:40
+        40          if ('\0' == *s) {
+        (gdb) p rest
+        $3 = 0
+        (gdb) s
+        45          rest = print_reverse (s + 1);
+        (gdb) p rest
+        $4 = 0
+        (gdb) s
+
+        Breakpoint 1, print_reverse (s=0x7fffffffdd7e "") at pr_buggy.c:40
+        40          if ('\0' == *s) {
+        (gdb) p rest
+        $5 = 32767
+        (gdb) s
+        41              return rest;
+        (gdb) s
+        53      }
+        (gdb) s
+        48          printf ("%c", *s);
+        (gdb) s
+        putchar (c=105) at ./libio/putchar.c:25
+        25      ./libio/putchar.c: No such file or directory.
+        (gdb) c
+        Continuing.
+        "rwii" reversed is "iiwr" (length 32771)
+
+
+    Bug Analysis；
+        No initialization
+        
+    How I fix the bug? 
+        Add initialization on line 36
+        int32_t rest = 0;
+
+
+primeNumber:
+    Output:
+        2 is prime.
+        3 is prime.
+        4 is prime.
+        5 is prime.
+        7 is prime.
+        9 is prime.
+        ...
+    Correct:
+        2 is prime.
+        3 is prime.
+        5 is prime.
+        7 is prime.
+        ...
+        (4 and 9 are not prime)
+    
+    Trace:
+        (gdb) b is_prime
+        Breakpoint 1 at 0x11bb
+        (gdb) r
+        Starting program: /home/xia/ece220_mps/mp7/dist/primeNumber/primeNumber 
+        [Thread debugging using libthread_db enabled]
+        Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) c
+        Continuing.
+        2 is prime.
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) c
+        Continuing.
+        3 is prime.
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) disass is_prime 
+        Dump of assembler code for function is_prime:
+        0x00005555555551b7 <+0>:     push   %rbp
+        0x00005555555551b8 <+1>:     mov    %rsp,%rbp
+        => 0x00005555555551bb <+4>:     sub    $0x20,%rsp
+        0x00005555555551bf <+8>:     mov    %edi,-0x14(%rbp)
+        0x00005555555551c2 <+11>:    movl   $0x2,-0x4(%rbp)
+        0x00005555555551c9 <+18>:    jmp    0x5555555551e9 <is_prime+50>
+        0x00005555555551cb <+20>:    mov    -0x14(%rbp),%edx
+        0x00005555555551ce <+23>:    mov    -0x4(%rbp),%eax
+        0x00005555555551d1 <+26>:    mov    %edx,%esi
+        0x00005555555551d3 <+28>:    mov    %eax,%edi
+        0x00005555555551d5 <+30>:    call   0x555555555189 <divides_evenly>
+        0x00005555555551da <+35>:    test   %eax,%eax
+        0x00005555555551dc <+37>:    je     0x5555555551e5 <is_prime+46>
+        0x00005555555551de <+39>:    mov    $0x0,%eax
+        0x00005555555551e3 <+44>:    jmp    0x5555555551fa <is_prime+67>
+        0x00005555555551e5 <+46>:    addl   $0x1,-0x4(%rbp)
+        0x00005555555551e9 <+50>:    mov    -0x4(%rbp),%eax
+        0x00005555555551ec <+53>:    imul   -0x4(%rbp),%eax
+        0x00005555555551f0 <+57>:    cmp    %eax,-0x14(%rbp)
+        0x00005555555551f3 <+60>:    jg     0x5555555551cb <is_prime+20>
+        0x00005555555551f5 <+62>:    mov    $0x1,%eax
+        0x00005555555551fa <+67>:    leave  
+        0x00005555555551fb <+68>:    ret    
+        End of assembler dump.
+        (gdb) b *0x00005555555551d5
+        Breakpoint 2 at 0x5555555551d5
+        (gdb) info registers
+        rax            0x4                 4
+        rbx            0x0                 0
+        rcx            0x1                 1
+        rdx            0x0                 0
+        rsi            0x5555555592a0      93824992252576
+        rdi            0x4                 4
+        rbp            0x7fffffffd8f0      0x7fffffffd8f0
+        rsp            0x7fffffffd8f0      0x7fffffffd8f0
+        r8             0x0                 0
+        r9             0x7fffffffd7d7      140737488345047
+        r10            0x0                 0
+        r11            0x246               582
+        r12            0x7fffffffda28      140737488345640
+        r13            0x555555555139      93824992235833
+        r14            0x555555557dc0      93824992247232
+        r15            0x7ffff7ffd040      140737354125376
+        rip            0x5555555551bb      0x5555555551bb <is_prime+4>
+        eflags         0x297               [ CF PF AF SF IF ]
+        cs             0x33                51
+        ss             0x2b                43
+        ds             0x0                 0
+        es             0x0                 0
+        fs             0x0                 0
+        gs             0x0                 0
+        (gdb) c
+        Continuing.
+        4 is prime.
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) info registers
+        rax            0x5                 5
+        rbx            0x0                 0
+        rcx            0x1                 1
+        rdx            0x0                 0
+        rsi            0x5555555592a0      93824992252576
+        rdi            0x5                 5
+        rbp            0x7fffffffd8f0      0x7fffffffd8f0
+        rsp            0x7fffffffd8f0      0x7fffffffd8f0
+        r8             0x0                 0
+        r9             0x7fffffffd7d7      140737488345047
+        r10            0x0                 0
+        r11            0x246               582
+        r12            0x7fffffffda28      140737488345640
+        r13            0x555555555139      93824992235833
+        r14            0x555555557dc0      93824992247232
+        r15            0x7ffff7ffd040      140737354125376
+        rip            0x5555555551bb      0x5555555551bb <is_prime+4>
+        eflags         0x297               [ CF PF AF SF IF ]
+        cs             0x33                51
+        ss             0x2b                43
+        ds             0x0                 0
+        es             0x0                 0
+        fs             0x0                 0
+        gs             0x0                 0
+        (gdb) info breakpoints
+        Num     Type           Disp Enb Address            What
+        1       breakpoint     keep y   0x00005555555551bb <is_prime+4>
+                breakpoint already hit 4 times
+        2       breakpoint     keep y   0x00005555555551d5 <is_prime+30>
+        (gdb) delet 2
+        (gdb) c
+        Continuing.
+        5 is prime.
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) c
+        Continuing.
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) c
+        Continuing.
+        7 is prime.
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) c
+        Continuing.
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) disass is_prime
+        Dump of assembler code for function is_prime:
+        0x00005555555551b7 <+0>:     push   %rbp
+        0x00005555555551b8 <+1>:     mov    %rsp,%rbp
+        => 0x00005555555551bb <+4>:     sub    $0x20,%rsp
+        0x00005555555551bf <+8>:     mov    %edi,-0x14(%rbp)
+        0x00005555555551c2 <+11>:    movl   $0x2,-0x4(%rbp)
+        0x00005555555551c9 <+18>:    jmp    0x5555555551e9 <is_prime+50>
+        0x00005555555551cb <+20>:    mov    -0x14(%rbp),%edx
+        0x00005555555551ce <+23>:    mov    -0x4(%rbp),%eax
+        0x00005555555551d1 <+26>:    mov    %edx,%esi
+        0x00005555555551d3 <+28>:    mov    %eax,%edi
+        0x00005555555551d5 <+30>:    call   0x555555555189 <divides_evenly>
+        0x00005555555551da <+35>:    test   %eax,%eax
+        0x00005555555551dc <+37>:    je     0x5555555551e5 <is_prime+46>
+        0x00005555555551de <+39>:    mov    $0x0,%eax
+        0x00005555555551e3 <+44>:    jmp    0x5555555551fa <is_prime+67>
+        0x00005555555551e5 <+46>:    addl   $0x1,-0x4(%rbp)
+        0x00005555555551e9 <+50>:    mov    -0x4(%rbp),%eax
+        0x00005555555551ec <+53>:    imul   -0x4(%rbp),%eax
+        0x00005555555551f0 <+57>:    cmp    %eax,-0x14(%rbp)
+        0x00005555555551f3 <+60>:    jg     0x5555555551cb <is_prime+20>
+        0x00005555555551f5 <+62>:    mov    $0x1,%eax
+        0x00005555555551fa <+67>:    leave  
+        0x00005555555551fb <+68>:    ret    
+        End of assembler dump.
+        (gdb) b *0x00005555555551d5
+        Breakpoint 3 at 0x5555555551d5
+        (gdb) info registers
+        rax            0x9                 9
+        rbx            0x0                 0
+        rcx            0x1                 1
+        rdx            0x4                 4
+        rsi            0x8                 8
+        rdi            0x9                 9
+        rbp            0x7fffffffd8f0      0x7fffffffd8f0
+        rsp            0x7fffffffd8f0      0x7fffffffd8f0
+        r8             0x0                 0
+        r9             0x7fffffffd7d7      140737488345047
+        r10            0x0                 0
+        r11            0x246               582
+        r12            0x7fffffffda28      140737488345640
+        r13            0x555555555139      93824992235833
+        r14            0x555555557dc0      93824992247232
+        r15            0x7ffff7ffd040      140737354125376
+        rip            0x5555555551bb      0x5555555551bb <is_prime+4>
+        eflags         0x287               [ CF PF SF IF ]
+        cs             0x33                51
+        ss             0x2b                43
+        ds             0x0                 0
+        es             0x0                 0
+        fs             0x0                 0
+        gs             0x0                 0
+        (gdb) c
+        Continuing.
+
+        Breakpoint 3, 0x00005555555551d5 in is_prime ()
+        (gdb) info registers
+        rax            0x2                 2
+        rbx            0x0                 0
+        rcx            0x1                 1
+        rdx            0x9                 9
+        rsi            0x9                 9
+        rdi            0x2                 2
+        rbp            0x7fffffffd8f0      0x7fffffffd8f0
+        rsp            0x7fffffffd8d0      0x7fffffffd8d0
+        r8             0x0                 0
+        r9             0x7fffffffd7d7      140737488345047
+        r10            0x0                 0
+        r11            0x246               582
+        r12            0x7fffffffda28      140737488345640
+        r13            0x555555555139      93824992235833
+        r14            0x555555557dc0      93824992247232
+        r15            0x7ffff7ffd040      140737354125376
+        rip            0x5555555551d5      0x5555555551d5 <is_prime+30>
+        eflags         0x206               [ PF IF ]
+        cs             0x33                51
+        ss             0x2b                43
+        ds             0x0                 0
+        es             0x0                 0
+        fs             0x0                 0
+        gs             0x0                 0
+        (gdb) c
+        Continuing.
+        9 is prime.
+
+        Breakpoint 1, 0x00005555555551bb in is_prime ()
+        (gdb) info registers
+        rax            0xa                 10
+        rbx            0x0                 0
+        rcx            0x1                 1
+        rdx            0x0                 0
+        rsi            0x5555555592a0      93824992252576
+        rdi            0xa                 10
+        rbp            0x7fffffffd8f0      0x7fffffffd8f0
+        rsp            0x7fffffffd8f0      0x7fffffffd8f0
+        r8             0x0                 0
+        r9             0x7fffffffd7d7      140737488345047
+        r10            0x0                 0
+        r11            0x246               582
+        r12            0x7fffffffda28      140737488345640
+        r13            0x555555555139      93824992235833
+        r14            0x555555557dc0      93824992247232
+        r15            0x7ffff7ffd040      140737354125376
+        rip            0x5555555551bb      0x5555555551bb <is_prime+4>
+        eflags         0x283               [ CF SF IF ]
+        cs             0x33                51
+        ss             0x2b                43
+        ds             0x0                 0
+        es             0x0                 0
+        fs             0x0                 0
+        gs             0x0                 0
+
+    Implementation of function is_prime:
+        Check the number from 2 to square root of n, whether it can be evenly divided
+
+    Bug Analysis and Discription:
+        I find that, for the number 9, is_prime doesn't check whether factor 3 can evenly divided, so 9 is misjudged as prime
+        Since all square number are identified to be a prime number, I think in the loop of is_prime function, it has a wrong boundary.
+        It doesn't check whether the number can be evenly divided by the square root of the number.
+    Fix the bug:
+        Modify the bounds of the loop so that the square root of a number can also be checked whether it can be evenly divided.
+
+sort:
+    Test:
+        7
+        3 4 2 5 6 1 7
+    
+    Desired output:
+        1 2 3 4 5 6 7
+    Actual output:
+        1 2 3 4 5 5 6 
+        
+    Trace:
+        (gdb) b swap
+        Breakpoint 1 at 0x11d9: file sort.c, line 4.
+        (gdb) b heapify
+        Breakpoint 2 at 0x1271: file sort.c, line 20.
+        (gdb) r t.txt
+        Starting program: /home/xia/ece220_mps/mp7/dist/sort/sort t.txt
+        [Thread debugging using libthread_db enabled]
+        Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+        Breakpoint 2, heapify (arr=0x55555555a490, n=7, i=2) at sort.c:20
+        20          int largest = i;  // Initialize largest as root
+        (gdb) p *arr@10
+        $1 = {3, 4, 2, 5, 6, 1, 7, 5, 0, 0}
+        (gdb) c
+        Continuing.
+
+        Breakpoint 1, swap (a=0x55555555a498, b=0x55555555a4a8) at sort.c:4
+        4       int t = *a; 
+        (gdb) p arr
+        No symbol "arr" in current context.
+        (gdb) c
+        Continuing.
+
+        Breakpoint 2, heapify (arr=0x55555555a490, n=7, i=6) at sort.c:20
+        20          int largest = i;  // Initialize largest as root
+        (gdb) p arr
+        $2 = (int *) 0x55555555a490
+        (gdb) p *arr
+        $3 = 3
+        (gdb) p *arr@10
+        $4 = {3, 4, 7, 5, 6, 1, 2, 5, 0, 0}
+        (gdb) p arr+7
+        $5 = (int *) 0x55555555a4ac
+        (gdb) p arr+1
+        $6 = (int *) 0x55555555a494
+        (gdb) p arr+2
+        $7 = (int *) 0x55555555a498
+        (gdb) p arr+3
+        $8 = (int *) 0x55555555a49c
+        (gdb) p arr+4
+        $9 = (int *) 0x55555555a4a0
+        (gdb) p arr+5
+        $10 = (int *) 0x55555555a4a4
+        (gdb) p arr+6
+        $11 = (int *) 0x55555555a4a8
+        (gdb) p arr+7
+        $12 = (int *) 0x55555555a4ac
+        (gdb) c
+        Continuing.
+
+        Breakpoint 2, heapify (arr=0x55555555a490, n=7, i=1) at sort.c:20
+        20          int largest = i;  // Initialize largest as root
+        (gdb) c
+        Continuing.
+
+        Breakpoint 1, swap (a=0x55555555a494, b=0x55555555a4a0) at sort.c:4
+        4       int t = *a; 
+        (gdb) c
+        Continuing.
+
+        Breakpoint 2, heapify (arr=0x55555555a490, n=7, i=4) at sort.c:20
+        20          int largest = i;  // Initialize largest as root
+        (gdb) c
+        Continuing.
+
+        Breakpoint 2, heapify (arr=0x55555555a490, n=7, i=0) at sort.c:20
+        20          int largest = i;  // Initialize largest as root
+        (gdb) c
+        Continuing.
+
+        Breakpoint 1, swap (a=0x55555555a490, b=0x55555555a498) at sort.c:4
+        4       int t = *a; 
+        (gdb) c
+        Continuing.
+
+        Breakpoint 2, heapify (arr=0x55555555a490, n=7, i=2) at sort.c:20
+        20          int largest = i;  // Initialize largest as root
+        (gdb) c
+        Continuing.
+
+        Breakpoint 1, swap (a=0x55555555a490, b=0x55555555a4ac) at sort.c:4
+        4       int t = *a; 
+        (gdb) c
+        Continuing.
+
+        // at here, addresses(b=0x55555555a4ac) swaped are beyond array boundaries
+
+        Breakpoint 2, heapify (arr=0x55555555a490, n=7, i=0) at sort.c:20
+        20          int largest = i;  // Initialize largest as root
+        (gdb) d 1
+        (gdb) d 2
+        (gdb) c
+        Continuing.
+        1 2 3 4 5 5 6 
+        [Inferior 1 (process 79413) exited normally]
+
+    
+    The erroneous intermediate values:
+        Addresses(b=0x55555555a4ac) swaped are beyond array boundaries, so the sorted array has the wrong data.
+
+    Possible cause of the bug:
+        In the loop of the main function, the subscript of the swap array exceeds the length of the array.
+        Or the loop's boundaries are too large, causing the iteration pointer to go out of range.
